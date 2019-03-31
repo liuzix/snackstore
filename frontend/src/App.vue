@@ -33,7 +33,7 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Snackstore'
+      msg: 'Welcome to Snackstore?'
     }
   }
 }
