@@ -43,5 +43,10 @@ module.exports = {
     alias: {
       vue$: "vue/dist/vue.esm.js"
     }
+  },
+  devServer: {
+    proxy: {
+      '/api': 'http://localhost:5000'
+    }
   }
 };
