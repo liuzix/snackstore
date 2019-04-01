@@ -28,5 +28,5 @@ COPY /etc/supervisord.conf /etc/
 
 WORKDIR /app
 
-CMD ["/usr/bin/supervisord"]
-
+RUN apt-get install -y gettext
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/nginx.conf > /etc/nginx/nginx.conf" && /usr/bin/supervisord

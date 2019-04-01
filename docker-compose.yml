@@ -1,6 +1,8 @@
 version: '3'
 services:
     web:
+        environment:
+            - PORT=80
         build: .
         ports:
             - "80:80"
