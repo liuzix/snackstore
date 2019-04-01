@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
-RUN apt update
-RUN apt install -y --no-install-recommends \
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
     python3-pip nginx python3 supervisor \
     python3-setuptools python3-dev \
     build-essential nodejs npm
@@ -9,6 +9,8 @@ RUN apt install -y --no-install-recommends \
 RUN pip3 install gunicorn
 RUN pip3 install flask
 RUN pip3 install sqlalchemy
+RUN pip3 install simplejson
+RUN pip3 install psycopg2
 
 RUN useradd --no-create-home nginx
 RUN rm /etc/nginx/sites-enabled/default
