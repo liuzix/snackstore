@@ -1,14 +1,14 @@
 <template>
 <div>
-  <b-navbar toggleable="lg" type="dark" variant="info">
+  <b-navbar class="sticky-top" toggleable="lg" type="dark" variant="info">
     <b-navbar-brand href="#">Snackstore</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item href="#">Store</b-nav-item>
-        <b-nav-item href="#" disabled>Manage</b-nav-item>
+        <b-nav-item :to="'store'">Store</b-nav-item>
+        <!--<b-nav-item :to="manage">Manage</b-nav-item>-->
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -23,7 +23,7 @@
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
-  <div>{{msg}}</div>
+  <router-view></router-view>
 </div>
 
 </template>
@@ -40,8 +40,10 @@ export default {
 </script>
 
 <style>
+body {
+  font-family: 'Lato', sans-serif !important;
+}
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -55,10 +57,7 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+
 a {
   color: #42b983;
 }
