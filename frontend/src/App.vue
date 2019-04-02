@@ -17,18 +17,24 @@
         <b-nav-item-dropdown right>
           <!-- Using 'button-content' slot -->
           <template slot="button-content"><em>User</em></template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item href="#" v-b-modal.modal-login>Login</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
+  <b-modal id = "modal-login" title="Signup or Login" 
+    @ok="(evt) => $refs.login_ref.handle_submit(evt)">
+
+    <login ref="login_ref" />
+  </b-modal>
   <router-view></router-view>
 </div>
 
 </template>
 
 <script>
+import login from './Login.vue'
+
 export default {
   name: 'app',
   data () {
