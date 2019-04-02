@@ -30,6 +30,14 @@ class SnackStoreUser:
             self.key = uuid.uuid4().hex + self.data['login']
         r.set(self.key, json.dumps(self.data))
 
+@auth_api.route("/api/user_info", methods=['GET'])
+def user_info():
+    key = request.get_cookie('tag')
+    if key == "":
+        return jsonify(logged_in = False), 200
+    user = SnackStoreUser(key)
+    return jsonify(logged_in = True, data = user.data), 200
+
 
 @auth_api.route("/api/signup_customer", methods=['POST'])
 def signup_customer():
