@@ -11,6 +11,7 @@ RUN pip3 install flask
 RUN pip3 install sqlalchemy
 RUN pip3 install simplejson
 RUN pip3 install psycopg2
+RUN pip3 install redis
 
 RUN useradd --no-create-home nginx
 RUN rm /etc/nginx/sites-enabled/default
