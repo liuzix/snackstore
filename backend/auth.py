@@ -32,11 +32,51 @@ class SnackStoreUser:
 
 @auth_api.route("/api/user_info", methods=['GET'])
 def user_info():
-    key = request.get_cookie('tag')
-    if key == "":
+    key = request.cookies.get('tag')
+    if key is None:
         return jsonify(logged_in = False), 200
     user = SnackStoreUser(key)
     return jsonify(logged_in = True, data = user.data), 200
+
+@auth_api.route("/api/user_login", methods=['POST'])
+def user_login():
+    req = request.get_json()
+    print(req['password'])
+    res = db.execute(
+        "SELECT name FROM "
+        "(SELECT loginname, password, name, 'customer' AS type FROM login, " \
+        "customers WHERE login.cid = customers.cid " \
+        "UNION ALL SELECT loginname, password, name, 'staff' as type FROM login, " \
+        "staff WHERE login.eid = staff.eid) users " \
+        "WHERE loginname = %s AND password = %s",
+        req['login'], req['password'])
+
+    if res.rowcount == 0:
+        return jsonify(msg="wrong login name or password"), 400
+    
+    name = res.fetchone()[0]
+
+    user = SnackStoreUser()
+    user.data['login'] = req['login']
+    user.data['name'] = name
+    user.data['cart'] = []
+    user.commit()
+
+    ret = jsonify(msg="success")
+    ret.set_cookie('tag', user.key)
+
+    return ret, 200
+
+@auth_api.route("/api/user_signout", methods=['GET'])
+def user_signout():
+    key = request.cookies.get('tag')
+    if key is not None:
+        r.delete(key)
+        ret = jsonify(msg="success")
+        ret.set_cookie('tag', expires=0)
+        return ret, 200
+    else:
+        return jsonify(msg="not logged in"), 200
 
 
 @auth_api.route("/api/signup_customer", methods=['POST'])

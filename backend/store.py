@@ -2,7 +2,9 @@ from flask import Blueprint
 from flask import jsonify
 from flask import json
 from flask import abort
+from flask import request
 from db import db
+from auth import SnackStoreUser
 
 store_api = Blueprint('store_api', __name__)
 
@@ -34,3 +36,12 @@ def count_snacks():
     else:
         abort(404)
 
+@store_api.route('/api/upload_cart', methods=['POST'])
+def update_cart():
+    key = request.cookies.get('tag')
+    user = SnackStoreUser(key)
+    req = request.get_json()
+    user.data['cart'] = req
+    print(user.data)
+    user.commit()
+    return jsonify(msg="success"), 200

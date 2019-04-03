@@ -24,10 +24,10 @@ WORKDIR /www
 RUN npm install
 RUN npm run build
 
-COPY /etc/nginx.conf /etc/nginx
+COPY /etc/nginx.conf /etc/nginx/nginx.conf.template
 COPY /etc/supervisord.conf /etc/
 
 WORKDIR /app
 
 RUN apt-get install -y gettext
-CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/nginx.conf > /etc/nginx/nginx.conf" && /usr/bin/supervisord
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf" && /usr/bin/supervisord
