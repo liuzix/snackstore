@@ -17,6 +17,7 @@ This is Project 1 for COMS 4111.
     # in another terminal session
     cd frontend
     npm install
+    npm install --save vue-input-autowidth
     npm run dev
 
 You can then access the web app at http://localhost:8080/
