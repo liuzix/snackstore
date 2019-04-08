@@ -10,6 +10,7 @@ store_api = Blueprint('store_api', __name__)
 
 @store_api.route('/api')
 def hello_world():
+    #print("getting hello world")
     return jsonify(msg = "Welcome to Snackstore")
 
 @store_api.route('/api/getsnacks/<offset>/<limit>')

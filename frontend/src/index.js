@@ -22,8 +22,6 @@ Vue.use(VueRouter)
 Vue.component(store)
 Vue.component("staff", staff)
 
-
-
 Vue.component('store', store_comp)
 Vue.component('login', login)
 Vue.component('cart', cart)
