@@ -8,7 +8,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item :to="'store'">Store</b-nav-item>
-          <b-nav-item :to="'staff'">Staff</b-nav-item>
+          <b-nav-item :to="'staff'" v-if="user.type=='staff'">Staff</b-nav-item>
 
 
           <!--<b-nav-item :to="manage">Manage</b-nav-item>-->

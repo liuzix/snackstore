@@ -43,10 +43,10 @@ def user_login():
     req = request.get_json()
     print(req['password'])
     res = db.execute(
-        "SELECT name FROM "
+        "SELECT name, type FROM "
         "(SELECT loginname, password, name, 'customer' AS type FROM login, " \
         "customers WHERE login.cid = customers.cid " \
-        "UNION ALL SELECT loginname, password, name, 'staff' as type FROM login, " \
+        "UNION ALL SELECT loginname, password, sname as name, 'staff' as type FROM login, " \
         "staff WHERE login.eid = staff.eid) users " \
         "WHERE loginname = %s AND password = %s",
         req['login'], req['password'])
@@ -54,12 +54,15 @@ def user_login():
     if res.rowcount == 0:
         return jsonify(msg="wrong login name or password"), 400
     
-    name = res.fetchone()[0]
+    row = res.fetchone()
+    name = row['name']
+    usertype = row['type']
 
     user = SnackStoreUser()
     user.data['login'] = req['login']
     user.data['name'] = name
     user.data['cart'] = []
+    user.data['type'] = usertype
     user.commit()
 
     ret = jsonify(msg="success")
@@ -116,6 +119,7 @@ def signup_customer():
         user.data['login'] = login
         user.data['name'] = name
         user.data['cart'] = []
+
         user.commit()
 
         session.commit()        

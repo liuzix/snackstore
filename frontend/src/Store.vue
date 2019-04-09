@@ -31,6 +31,7 @@
                             <div>Price: {{ snack.cost }}</div>
                             <div>Inventory {{ snack.inventory }}</div>
                             <b-button variant="outline-primary"
+                                v-if="snack.inventory > 0"
                                 class="position-absolute"
                                 style="right:0; bottom:0;"
                                 @click="(evt) => handle_buy({sid: snack.sid, name: snack.name, price: snack.cost})"
