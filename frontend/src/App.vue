@@ -5,11 +5,12 @@
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item :to="'store'">Store</b-nav-item>
           <b-nav-item :to="'staff'">Staff</b-nav-item>
+
+
           <!--<b-nav-item :to="manage">Manage</b-nav-item>-->
         </b-navbar-nav>
 
@@ -25,6 +26,9 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+
+                  
+
     <b-modal
       id="modal-login"
       title="Signup or Login"
@@ -32,7 +36,7 @@
     >
       <login ref="login_ref"/>
     </b-modal>
-    <router-view></router-view>
+   <router-view></router-view>
   </div>
 </template>
 
