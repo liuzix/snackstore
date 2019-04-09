@@ -60,6 +60,88 @@ def edit_snacks():
     else:
         abort(404)
         
+@staff_api.route('/staff_api/getorders/<offset>/<limit>')
+def get_orders(offset, limit):
+    try:
+        result = db.execute(
+                "select customers.name, customers.address, customers.cid, " \
+                "customerorders.oid, customerorders.date, customerorders.status" \
+                " from customerorders join customers on customerorders.cid = customers.cid " \
+ "LIMIT {} OFFSET {}".format(int(limit), int(offset)))
+        
+        ret = []
+        for row in result:
+            r = dict(row.items())
+            ret.append(r)
+        return jsonify(ret)
+    except ValueError as e:
+        return jsonify(msg = e.args), 400
+    else:
+        abort(404)
+        
+@staff_api.route('/staff_api/countorders')
+def count_orders():
+    print("counting orders")
+    try:
+        result = db.execute("SELECT COUNT(*) FROM customerorders")
+        return jsonify(result.fetchone()[0])
+    except ValueError as e:
+        return jsonify(msg = e.args), 400
+    else:
+        abort(404)
+        
+
+
+@staff_api.route('/staff_api/deleteorder',  methods=['POST'])
+def delete_order():
+    print("deleting order")
+    req = request.get_json()
+    
+    print(req)
+    
+    
+    oid = int(req['oid'])
+    #qty = int(req['qty'])
+    #return jsonify(msg = "Welcome to Snackstore")
+    
+    try:
+        sql = "DELETE FROM customerorders WHERE customerorders.oid = %d;" % (oid)
+        print(sql)
+        result = db.execute(sql)
+        print("getting result")
+        #print(result.fetchone())
+        return jsonify(msg = "Done"), 200
+    except ValueError as e:
+        return jsonify(msg = e.args), 400
+    else:
+        abort(404)
+        
+@staff_api.route('/staff_api/getsuppliers/<offset>/<limit>')
+def get_suppliers(offset, limit):
+    try:
+        result = db.execute(
+   "select * from suppliers, staff where suppliers.maintainer " \
+   "= staff.eid LIMIT {} OFFSET {}".format(int(limit), int(offset)))
+        ret = []
+        for row in result:
+            r = dict(row.items())
+            ret.append(r)
+        return jsonify(ret)
+    except ValueError as e:
+        return jsonify(msg = e.args), 400
+    else:
+        abort(404)
+        
+@staff_api.route('/staff_api/countsuppliers')
+def count_suppliers():
+    print("counting suppliers")
+    try:
+        result = db.execute("SELECT COUNT(*) FROM suppliers")
+        return jsonify(result.fetchone()[0])
+    except ValueError as e:
+        return jsonify(msg = e.args), 400
+    else:
+        abort(404)       
 #UPDATE table_name
 #SET column1 = value1, column2 = value2, ...
 #WHERE condition;
