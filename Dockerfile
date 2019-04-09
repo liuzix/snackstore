@@ -21,7 +21,10 @@ RUN rm -r /root/.cache
 ADD ./backend /app
 ADD ./frontend /www
 WORKDIR /www
-RUN npm install
+RUN mv ./node_modules ./node_modules.tmp \
+  && mv ./node_modules.tmp ./node_modules \
+  && npm install
+  
 RUN npm run build
 
 COPY /etc/nginx.conf /etc/nginx/nginx.conf.template
