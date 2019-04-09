@@ -21,7 +21,7 @@ RUN rm -r /root/.cache
 ADD ./backend /app
 ADD ./frontend /www
 WORKDIR /www
-RUN mv ./node_modules ./node_modules.tmp \
+RUN mkdir -p node_modules && mv ./node_modules ./node_modules.tmp \
   && mv ./node_modules.tmp ./node_modules \
   && npm install
 
