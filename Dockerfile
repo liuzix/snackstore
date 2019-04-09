@@ -10,7 +10,7 @@ RUN pip3 install gunicorn
 RUN pip3 install flask
 RUN pip3 install sqlalchemy
 RUN pip3 install simplejson
-RUN pip3 install psycopg2
+RUN pip3 install psycopg2-binary
 RUN pip3 install redis
 
 RUN useradd --no-create-home nginx
@@ -24,7 +24,7 @@ WORKDIR /www
 RUN mv ./node_modules ./node_modules.tmp \
   && mv ./node_modules.tmp ./node_modules \
   && npm install
-  
+
 RUN npm run build
 
 COPY /etc/nginx.conf /etc/nginx/nginx.conf.template
