@@ -75,8 +75,11 @@
                     </div>        
                                       
                   </b-tab>
+
                   <b-tab title="Supplier">
-                    <div>
+                  <div class="row">
+                    <div class = "col-8">
+
                         <b-list-group id="suppliers-list">
                         
                             <b-list-group-item v-for="supplier in suppliers" :key="supplier.spid">
@@ -99,7 +102,9 @@
                             :per-page="per_page_suppliers"
                             class="mt-4"
                         ></b-pagination>
-                    </div>                    
+                    </div>  
+                <div class="col-4"><addSupplier /></div>   
+                </div>               
                   </b-tab>
                   
               </b-tabs>
@@ -109,7 +114,7 @@
 
 <script>
 import axios from "axios"
-import cart from "./Cart.vue"
+import addSupplier from "./AddSupplier.vue"
 import { mapMutations, mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -155,7 +160,7 @@ export default {
     },
 
     methods: {
-        ...mapActions(['add_to_cart_update']),
+        ...mapActions(),
         update_view() {
             this.loading = true
             axios.get('/staff_api/countsnacks')
@@ -229,8 +234,9 @@ export default {
                 .catch(error => console.log(error))
                 
 
-        },
+        }
         
+
 
     }
 }
