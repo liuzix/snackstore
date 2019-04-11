@@ -14,6 +14,7 @@ import login from './Login.vue'
 import cart from './Cart.vue'
 import axios from 'axios'
 import store from './data_store.js'
+import addSupplier from './AddSupplier.vue'
 
 import VueInputAutowidth from 'vue-input-autowidth'
 
@@ -25,7 +26,7 @@ Vue.use(VueRouter)
 
 Vue.component(store)
 Vue.component("staff", staff)
-
+Vue.component('addSupplier',addSupplier )
 Vue.component('store', store_comp)
 Vue.component('login', login)
 Vue.component('cart', cart)
