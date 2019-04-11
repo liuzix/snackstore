@@ -11,8 +11,14 @@
                                 <div>
 
                                     <div class="float-right">
-                                        <b-badge v-if="order.status == 'complete'">Complete</b-badge>
-                                        <b-badge v-else> Incomplete </b-badge>
+                                            <b-form-checkbox
+                                                v-model="order.status"
+                                                value="complete"
+                                                unchecked-value="incomplete"
+                                                @change="checked => set_complete(order.oid, checked)"
+                                            >
+                                                Order completed
+                                            </b-form-checkbox>
                                     </div>
                                 </div>
                                 <div>Customer Name: {{ order.name }}</div>
@@ -167,6 +173,12 @@ export default {
                 
 
         },
+
+        set_complete: function(oid, complete) {
+            console.log("oid = " + oid + ", status = " + complete)
+            axios.post('/staff_api/togglecomplete', {oid: oid, status: complete})
+                .catch(error => console.log(error))
+        },
         
         edit_snack: function(sid, qty) {
         
@@ -177,9 +189,6 @@ export default {
         },
         
         delete_order: function(oid) {
-        
-        
-        
             axios.post('/staff_api/deleteorder', {'oid': oid})
                 .then (_ => this.update_orders())
                 .catch(error => console.log(error))

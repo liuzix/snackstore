@@ -98,6 +98,18 @@ def count_orders():
     else:
         abort(404)
         
+@staff_api.route('/staff_api/togglecomplete', methods=['POST'])
+def toggle_complete():
+    req = request.get_json()
+    completion = req['status']
+    oid = req['oid']
+
+    db.execute("""
+        UPDATE customerorders SET status = %s WHERE oid = %s
+    """, completion, oid)
+
+    return jsonify(msg = "successs"), 200
+
 
 
 @staff_api.route('/staff_api/deleteorder',  methods=['POST'])
