@@ -146,7 +146,21 @@ def count_suppliers():
     except ValueError as e:
         return jsonify(msg = e.args), 400
     else:
-        abort(404)       
+        abort(404)  
+        
+@staff_api.route('/staff_api/addsuppliers',  methods=['POST'])
+def count_suppliers(name, address, phone_number):
+    print("adding suppliers")
+    try:
+        result = db.execute(
+    "INSERT INTO suppliers(spid, address, name, status, maintainer, phone_number)"\
+    "VALUES" \
+    "(default, '%s', '%s', 'active', 1, '%s');" % (address, name, phone_number))
+        return jsonify(result.fetchone()[0])
+    except ValueError as e:
+        return jsonify(msg = e.args), 400
+    else:
+        abort(404) 
 #UPDATE table_name
 #SET column1 = value1, column2 = value2, ...
 #WHERE condition;
