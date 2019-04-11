@@ -44,6 +44,8 @@ module.exports = {
       vue$: "vue/dist/vue.esm.js"
     }
   },
+  mode: 'development',
+  devtool: 'inline-source-map',
   devServer: {
     proxy: {
       '/api': 'http://localhost:5000',

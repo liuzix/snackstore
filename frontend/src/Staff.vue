@@ -160,7 +160,6 @@ export default {
     },
 
     methods: {
-        ...mapActions(),
         update_view() {
             this.loading = true
             axios.get('/staff_api/countsnacks')
