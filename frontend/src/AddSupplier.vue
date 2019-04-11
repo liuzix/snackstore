@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <form class="review-form" @submit.prevent="onSubmit">
+        <form class="review-form" @submit.prevent="send_form(name, address, phone_number)">
           <p>
             <label for="name">Name:</label>
             <input id="name" v-model="name" placeholder="name">
@@ -42,15 +42,17 @@ export default {
     },
 
     methods: {
-        send_form() {
+        send_form(name, address, phone_number) {
             this.loading = true
 
 
-            axios.post("/staff_api/add_supplier/", {name: name, address: address, phone_number: phone_number})
+            axios.post("/staff_api/addsuppliers", {'name': name, 'address': address, 'phone_number': phone_number})
                 .then(response => {
                     this.loading = false
                 })
+                .then(_ => window.location.reload() )
                 .catch(error => console.log(error))
+            
                 
 
         }

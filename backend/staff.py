@@ -98,6 +98,18 @@ def count_orders():
     else:
         abort(404)
         
+@staff_api.route('/staff_api/togglecomplete', methods=['POST'])
+def toggle_complete():
+    req = request.get_json()
+    completion = req['status']
+    oid = req['oid']
+
+    db.execute("""
+        UPDATE customerorders SET status = %s WHERE oid = %s
+    """, completion, oid)
+
+    return jsonify(msg = "successs"), 200
+
 
 
 @staff_api.route('/staff_api/deleteorder',  methods=['POST'])
@@ -149,13 +161,23 @@ def count_suppliers():
         abort(404)  
         
 @staff_api.route('/staff_api/addsuppliers',  methods=['POST'])
-def count_suppliers(name, address, phone_number):
+def add_suppliers():
     print("adding suppliers")
+    
+    
+    req = request.get_json()    
+    print(req)
+    name = req['name']
+    address = req['address']
+    phone_number = req['phone_number']
+    sql =  "INSERT INTO suppliers(spid, address, name, status, maintainer, phone_number) "\
+    "VALUES " \
+    "(default, '%s', '%s', 'active', 1, '%s') RETURNING * " % (address, name, phone_number)
+    print(sql)
+    #result = db.execute(sql)
+    #print(result)
     try:
-        result = db.execute(
-    "INSERT INTO suppliers(spid, address, name, status, maintainer, phone_number)"\
-    "VALUES" \
-    "(default, '%s', '%s', 'active', 1, '%s');" % (address, name, phone_number))
+        result = db.execute(sql)
         return jsonify(result.fetchone()[0])
     except ValueError as e:
         return jsonify(msg = e.args), 400
