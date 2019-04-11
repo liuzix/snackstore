@@ -103,7 +103,7 @@
                             class="mt-4"
                         ></b-pagination>
                     </div>  
-                <div class="col-4"><addSupplier /></div>   
+                <div class="col-4"><addSupplier @update="update_suppliers()" /></div>   
                 </div>               
                   </b-tab>
                   

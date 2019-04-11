@@ -50,7 +50,7 @@ export default {
                 .then(response => {
                     this.loading = false
                 })
-                .then(_ => window.location.reload() )
+                .then(_ => this.$emit('update') )
                 .catch(error => console.log(error))
             
                 

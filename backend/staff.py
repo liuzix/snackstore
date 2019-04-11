@@ -138,7 +138,7 @@ def get_suppliers(offset, limit):
     try:
         result = db.execute(
    "select * from suppliers, staff where suppliers.maintainer " \
-   "= staff.eid LIMIT {} OFFSET {}".format(int(limit), int(offset)))
+   "= staff.eid ORDER BY suppliers.spid DESC LIMIT {} OFFSET {}".format(int(limit), int(offset)))
         ret = []
         for row in result:
             r = dict(row.items())
