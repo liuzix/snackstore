@@ -19,7 +19,7 @@ def hello_world():
 @store_api.route('/api/getsnacks/<offset>/<limit>')
 def get_snacks(offset, limit):
     try:
-        result = db.execute("SELECT * FROM snacks LIMIT {} OFFSET {}".format(int(limit), int(offset)))
+        result = db.execute("SELECT * FROM snacks ORDER BY sid LIMIT {} OFFSET {} ".format(int(limit), int(offset)))
         ret = []
         for row in result:
             r = dict(row.items())

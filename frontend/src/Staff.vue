@@ -2,23 +2,24 @@
 
     <div class="w-75 mx-auto">
         <b-card no-body>
-            <b-tabs card>
+            <b-tabs>
                   <b-tab title="Customer Orders" active>
                     <div >
                         <b-list-group id="orders-list">
                         
                             <b-list-group-item v-for="order in orders" :key="order.oid">
                                 <div>
-                                    {{ order.name }}
+
                                     <div class="float-right">
                                         <b-badge v-if="order.status == 'complete'">Complete</b-badge>
                                         <b-badge v-else> Incomplete </b-badge>
                                     </div>
                                 </div>
-                                <hr>
+                                <div>Customer Name: {{ order.name }}</div>
                                 <div>Date: {{ order.date}}</div>
                                 <div>Address: {{ order.address }}</div>    
                                 
+                                <b-table small fixed borderless hover :items="order.suborders" />
                                 <div id="delete">
                                   <b-button variant="warning" v-on:click="delete_order(order.oid)">Delete this Order</b-button>
                                 </div>     
@@ -49,12 +50,14 @@
                                 <hr>
                                 <div>Description: {{ snack.description}}</div>
                                 <div>Price: {{ snack.cost }}</div>
-                                <div>Inventory {{ snack.inventory }}</div>
                 
-                                <div><b-form-input v-on:blur= "edit_snack(snack.sid, snack.inventory)" v-model="snack.inventory"
-                                 v-autowidth="{maxWidth: '960px', minWidth: '20px', comfortZone: 0}" 
-                                placeholder="new inventory"></b-form-input></div>
-                                </hr>
+                                <div>
+                                    <b-form-input 
+                                        v-on:blur= "edit_snack(snack.sid, snack.inventory)" v-model="snack.inventory"
+                                        placeholder="new inventory" 
+                                        style="width: 100px;"
+                                    />
+                                </div>
                             </b-list-group-item>
                         </b-list-group>
                         <b-pagination
@@ -66,7 +69,7 @@
                     </div>        
                                       
                   </b-tab>
-                  <b-tab title="Supplier" active>
+                  <b-tab title="Supplier">
                     <div>
                         <b-list-group id="suppliers-list">
                         
@@ -82,7 +85,6 @@
                                 <div>Address: {{ supplier.address}}</div>
                                 <div>Phone Number: {{ supplier.phone_number}}</div>
                                 <div>maintainer: {{ supplier.sname }}</div>                               
-                                </hr>
                             </b-list-group-item>
                         </b-list-group>
                         <b-pagination
@@ -123,12 +125,6 @@ export default {
             cur_page_orders: 1,
             cur_page_suppliers: 1 
         }
-    },
-    
-    
-
-    computed: {
-        ...mapGetters(['logged_in'])
     },
 
     watch: {
@@ -227,13 +223,6 @@ export default {
         },
         
 
-        handle_buy(item) {
-            if (this.logged_in) {
-                this.add_to_cart_update(item)
-            } else {
-                alert("please log in first")
-            }
-        }
     }
 }
 </script>

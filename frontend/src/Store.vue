@@ -54,7 +54,7 @@
 <script>
 import axios from "axios"
 import cart from "./Cart.vue"
-import { mapMutations, mapGetters, mapActions } from 'vuex';
+import { mapMutations, mapGetters, mapActions, mapState } from 'vuex';
 
 export default {
     name: "store",
@@ -70,6 +70,7 @@ export default {
     },
 
     computed: {
+        ...mapState(['user']),
         ...mapGetters(['logged_in'])
     },
 
@@ -102,6 +103,10 @@ export default {
         },
 
         handle_buy(item) {
+            if (this.user.type == "staff") {
+                alert("staff cannot buy items")
+                return
+            }
             if (this.logged_in) {
                 this.add_to_cart_update(item)
             } else {

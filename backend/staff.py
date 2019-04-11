@@ -14,7 +14,7 @@ def hello_world():
 @staff_api.route('/staff_api/getsnacks/<offset>/<limit>')
 def get_snacks(offset, limit):
     try:
-        result = db.execute("SELECT * FROM snacks LIMIT {} OFFSET {}".format(int(limit), int(offset)))
+        result = db.execute("SELECT * FROM snacks ORDER BY sid LIMIT {} OFFSET {}".format(int(limit), int(offset)))
         ret = []
         for row in result:
             r = dict(row.items())
@@ -65,13 +65,21 @@ def get_orders(offset, limit):
     try:
         result = db.execute(
                 "select customers.name, customers.address, customers.cid, " \
-                "customerorders.oid, customerorders.date, customerorders.status" \
-                " from customerorders join customers on customerorders.cid = customers.cid " \
- "LIMIT {} OFFSET {}".format(int(limit), int(offset)))
+                "customerorders1.oid, customerorders1.date, customerorders1.status" \
+                " from (select * from customerorders left outer join staff on customerorders.eid = staff.eid) " \
+                "as customerorders1 join customers on customerorders1.cid = customers.cid " \
+                "ORDER BY customerorders1.date DESC LIMIT {} OFFSET {}".format(int(limit), int(offset)))
         
         ret = []
         for row in result:
             r = dict(row.items())
+            sub_result = db.execute("""
+                SELECT c.quantity, s.name, s.cost FROM customersuborders AS c, snacks AS s
+                WHERE c.oid = {} AND c.sid = s.sid 
+            """.format(int(row['oid'])))
+            r['suborders'] = []
+            for sub_row in sub_result:
+                r['suborders'].append(dict(sub_row.items()))
             ret.append(r)
         return jsonify(ret)
     except ValueError as e:
@@ -99,15 +107,12 @@ def delete_order():
     
     print(req)
     
-    
     oid = int(req['oid'])
-    #qty = int(req['qty'])
-    #return jsonify(msg = "Welcome to Snackstore")
-    
+
     try:
         sql = "DELETE FROM customerorders WHERE customerorders.oid = %d;" % (oid)
         print(sql)
-        result = db.execute(sql)
+        db.execute(sql)
         print("getting result")
         #print(result.fetchone())
         return jsonify(msg = "Done"), 200
