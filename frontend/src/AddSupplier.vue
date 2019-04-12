@@ -1,34 +1,31 @@
 <template>
 
     <div>
-        <form class="review-form" @submit.prevent="checkForm">
-        
-          <p v-if="errors.length">
-            <b>Please correct the following error(s):</b>
-            <ul>
-              <li v-for="error in errors">{{ error }}</li>
-            </ul>
-          </p>
-          <p>
-            <label for="name">Name:</label>
-            <input id="name" v-model="name" placeholder="name">
-          </p>
-          
-          <p>
-            <label for="address">Address:</label>
-            <input id="address" v-model="address" placeholder="address">
-          </p>
-          
-          <p>
-            <label for="phone_number">Phone Number:</label>
-            <input id="phone_number" v-model="phone_number" placeholder="phone_number">
-          </p>
-              
-          <p>
-            <input type="submit" value="Submit">  
-          </p>    
-        
-        </form>
+
+        <b-card class="mt-3" header="Add supplier">
+            <b-form  class="review-form" @submit.prevent="checkForm">
+            
+            
+                <b-form-group label="Supplier Name">
+                  <b-form-input id="name" v-model="name" />
+                </b-form-group>
+                <b-form-group label="Address">
+                  <b-form-input id="address" v-model="address" />
+                </b-form-group>
+                <b-form-group label="Phone Number">
+                  <b-form-input id="phone_number" v-model="phone_number" />
+                </b-form-group>
+                <b-button type="submit" variant="primary">submit</b-button>
+            
+            </b-form >
+              <p v-if="errors.length">
+                <b>Please correct the following error(s):</b>
+                <ul>
+                  <li v-for="error in errors">{{ error }}</li>
+                </ul>
+              </p>
+        </b-card>
+
     </div>
 
 </template>
@@ -58,11 +55,12 @@ export default {
                 .then(response => {
                     this.loading = false
                 })
-                .then(_ => window.location.reload() )
+                .then(_ => this.$emit('update') )
                 .catch(error => console.log(error))
             
-                
-
+            this.clearData();
+            
+            
         },
         checkForm: function (e) {
               this.errors = [];
@@ -82,13 +80,21 @@ export default {
         
               e.preventDefault();
               
-              this.send_form(this.name, this.address, this.phone_number);
+              if (this.error.length == 0) {
+                this.send_form(this.name, this.address, this.phone_number);
+              }         
         },
         
         validPhoneNumber: function (phone_number) {
-          var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          var re = /\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*/;
           return re.test(phone_number);
           
+        },
+        
+        clearData: function() {
+            this.name = null;
+            this.phone_number = null;
+            this.address = null;
         }
     }
 }

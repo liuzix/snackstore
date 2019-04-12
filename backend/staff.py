@@ -68,7 +68,7 @@ def get_orders(offset, limit):
                 "customerorders1.oid, customerorders1.date, customerorders1.status" \
                 " from (select * from customerorders left outer join staff on customerorders.eid = staff.eid) " \
                 "as customerorders1 join customers on customerorders1.cid = customers.cid " \
-                "ORDER BY customerorders1.date DESC LIMIT {} OFFSET {}".format(int(limit), int(offset)))
+                "ORDER BY customerorders1.oid DESC LIMIT {} OFFSET {}".format(int(limit), int(offset)))
         
         ret = []
         for row in result:
@@ -138,7 +138,7 @@ def get_suppliers(offset, limit):
     try:
         result = db.execute(
    "select * from suppliers, staff where suppliers.maintainer " \
-   "= staff.eid LIMIT {} OFFSET {}".format(int(limit), int(offset)))
+   "= staff.eid ORDER BY suppliers.spid DESC LIMIT {} OFFSET {}".format(int(limit), int(offset)))
         ret = []
         for row in result:
             r = dict(row.items())

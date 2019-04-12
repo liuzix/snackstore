@@ -1,11 +1,10 @@
 <template>
 
     <div class="w-75 mx-auto">
-        <b-card no-body>
             <b-tabs>
                   <b-tab title="Customer Orders" active>
                     <div >
-                        <b-list-group id="orders-list">
+                        <b-list-group class="mt-3" id="orders-list">
                         
                             <b-list-group-item v-for="order in orders" :key="order.oid">
                                 <div>
@@ -44,7 +43,7 @@
                   <b-tab title="Inventory">
 
                     <div class>
-                        <b-list-group id="snacks-list">
+                        <b-list-group class="mt-3" id="snacks-list">
                             <b-list-group-item v-for="snack in snacks" :key="snack.sid">
                                 <div>
                                     {{ snack.name }}
@@ -80,7 +79,7 @@
                   <div class="row">
                     <div class = "col-8">
 
-                        <b-list-group id="suppliers-list">
+                        <b-list-group  class="mt-3" id="suppliers-list">
                         
                             <b-list-group-item v-for="supplier in suppliers" :key="supplier.spid">
                                 <div>
@@ -103,12 +102,11 @@
                             class="mt-4"
                         ></b-pagination>
                     </div>  
-                <div class="col-4"><addSupplier /></div>   
+                <div class="col-4"><addSupplier @update="update_suppliers()" /></div>   
                 </div>               
                   </b-tab>
                   
-              </b-tabs>
-        </b-card>           
+              </b-tabs>        
     </div>
 </template>
 
