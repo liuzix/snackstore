@@ -177,7 +177,9 @@ def add_suppliers():
     #result = db.execute(sql)
     #print(result)
     try:
-        result = db.execute(sql)
+        result = db.execute(
+            """INSERT INTO suppliers(spid, address, name, status, maintainer, phone_number)
+            VALUES (default, %s, %s, 'active', 1, %s) RETURNING * """, address, name, phone_number)
         return jsonify(result.fetchone()[0])
     except ValueError as e:
         return jsonify(msg = e.args), 400
