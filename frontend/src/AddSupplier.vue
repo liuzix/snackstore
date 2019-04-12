@@ -54,11 +54,12 @@ export default {
             axios.post("/staff_api/addsuppliers", {'name': name, 'address': address, 'phone_number': phone_number})
                 .then(response => {
                     this.loading = false
+                    this.clearData()
                 })
                 .then(_ => this.$emit('update') )
                 .catch(error => console.log(error))
             
-            this.clearData();
+            
             
             
         },
@@ -74,13 +75,9 @@ export default {
                 this.errors.push('Valid phone number required.');
               }
         
-              if (!this.errors.length) {
-                return true;
-              }
-        
               e.preventDefault();
               
-              if (this.error.length == 0) {
+              if (this.errors.length == 0) {
                 this.send_form(this.name, this.address, this.phone_number);
               }         
         },
@@ -92,9 +89,9 @@ export default {
         },
         
         clearData: function() {
-            this.name = null;
-            this.phone_number = null;
-            this.address = null;
+            this.name = "";
+            this.phone_number = "";
+            this.address = "";
         }
     }
 }
